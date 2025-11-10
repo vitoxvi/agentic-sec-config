@@ -21,6 +21,8 @@ mcp-sandbox-openai-sdk = { git = "https://github.com/GuardiAgent/python-mcp-sand
 [dependency-groups]
 dev = [
     "black>=25.11.0",
+    "markdownify>=1.2.0",
     "pre-commit>=4.4.0",
+    "pymupdf4llm>=0.1.9",
     "ruff>=0.14.4",
 ]

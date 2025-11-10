@@ -1,12 +1,12 @@
 # Agentic Security Audit – Developer Roadmap
 
 ## Guiding Principles
-- **KISS & YAGNI:** Keep the system as small as possible; add only what the current stage requires.  
-- **Manager pattern:** `main-auditor` orchestrates specialist agents (policy-interpreter, db-auditor, fixer, reporter).  
-- **MCP-first + Sandbox:** All side effects exposed via MCP servers and executed through the MCP Sandbox OpenAI SDK wrapper. No direct raw I/O from agents.  
-- **Least privilege, dry-run by default:** Readers by default; explicit gated apply when needed.  
-- **Contracts before code:** Define JSON schemas for `Policy`, `Findings`, and `ChangePlan`/`ConfigPlan` before agent logic.  
-- **Reproducible demos:** Seeds, error injections, and reports are deterministic and scripted.  
+- **KISS & YAGNI:** Keep the system as small as possible; add only what the current stage requires.
+- **Manager pattern:** `main-auditor` orchestrates specialist agents (policy-interpreter, db-auditor, fixer, reporter).
+- **MCP-first + Sandbox:** All side effects exposed via MCP servers and executed through the MCP Sandbox OpenAI SDK wrapper. No direct raw I/O from agents.
+- **Least privilege, dry-run by default:** Readers by default; explicit gated apply when needed.
+- **Contracts before code:** Define JSON schemas for `Policy`, `Findings`, and `ChangePlan`/`ConfigPlan` before agent logic.
+- **Reproducible demos:** Seeds, error injections, and reports are deterministic and scripted.
 - **Student scope:** Ship simple CLI + Markdown/PDF reports; no heavy GUI unless time allows.
 
 ---
@@ -42,7 +42,7 @@
       error_injection.py
   /infra/
     docker-compose.yml
-    scripts/
+    scripts/              # macOS setup/demo scripts
   /data/
     policy/policy.yaml
     users/users.csv
@@ -55,7 +55,7 @@
 ---
 
 ## Stage 0 — Environment & Tooling (single-dev bootstrap)
-**Goal:** Clean, cross-platform setup using `uv`, OpenAI Agent SDK, MCP python SDK, and the MCP Sandbox OpenAI SDK wrapper.
+**Goal:** Clean macOS setup using `uv`, OpenAI Agent SDK, MCP python SDK, and the MCP Sandbox OpenAI SDK wrapper.
 
 **Tasks:**
 - Initialize repo structure (including `/info`) and commit `info/roadmap.md`, `info/project-brief.md`, and `info/grading-scheme.md`.
@@ -64,12 +64,12 @@
   uv add openai-agents mcp pydantic[dotenv] typer rich pytest
   ```
 - Create `.env.example` (API key placeholders, DB URL, OUTPUT paths).
-- Add pre-commit style (ruff/black) and simple `make`/PowerShell scripts.
-- Minimal MCP hello: FS server can read `/data/policy` and write `/reports`.
+- Add style formatting (ruff/black) via Makefile targets.
+- Minimal MCP hello
 
 **Exit criteria:**
-- Fresh clone: `uv sync` works on macOS & Windows.
-- `uv run python -c "import openai_agents, mcp"` prints OK.
+- Fresh clone: `uv sync` works on macOS.
+- `uv run python -c "import agents, mcp"` prints OK.
 - `/info` folder contains roadmap/brief/grading files.
 
 ---
@@ -184,15 +184,15 @@
 ---
 
 ## Stage 9 — Demo Runbook & Packaging
-**Goal:** Simple evaluation on macOS & Windows.
+**Goal:** Simple evaluation on macOS.
 
 **Tasks:**
-- `/infra/scripts/setup.(sh|ps1)` and `/infra/scripts/demo.(sh|ps1)`.
+- `/infra/scripts/setup.sh` and `/infra/scripts/demo.sh`.
 - README: copy-paste setup commands.
 - Finalize `/info/roadmap.md` with real outputs.
 
 **Exit criteria:**
-- Fresh clone to working demo with ≤3 commands per platform.
+- Fresh clone to working demo with ≤3 commands.
 
 ---
 
@@ -202,15 +202,6 @@
 brew install uv || pipx install uv
 git clone <repo> && cd <repo>
 uv sync && cp .env.example .env
-uv run python -m src.core.seed
-uv run python -m src.agents.main_auditor audit --dry-run
-```
-
-**Windows (PowerShell)**
-```powershell
-pipx install uv
-git clone <repo>; cd <repo>
-uv sync; copy .env.example .env
 uv run python -m src.core.seed
 uv run python -m src.agents.main_auditor audit --dry-run
 ```

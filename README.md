@@ -36,4 +36,3 @@ uv run python -m src.agents.main_auditor --help
 - [x] Hello FS server + CLI entrypoints
 - [ ] Add/verify OpenAI Agent SDK + MCP Sandbox wrapper URLs
 - [ ] Commit and push
-
