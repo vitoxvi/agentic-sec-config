@@ -11,6 +11,8 @@ __pycache__/
 .DS_Store
 # uv
 .uv/
+# Database
+data/audit.db
 # Reports and outputs
 /reports/*
 /outbox/*

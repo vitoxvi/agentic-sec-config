@@ -1,3 +1,6 @@
 username,team,role
 alice,finance,analyst
-bob,sales,rep
+bob,sales,representative
+charlie,warehouse,manager
+diana,finance,manager
+eve,sales,manager

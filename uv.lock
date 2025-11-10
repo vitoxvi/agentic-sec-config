@@ -13,6 +13,7 @@ dependencies = [
     { name = "pydantic" },
     { name = "pytest" },
     { name = "python-dotenv" },
+    { name = "pyyaml" },
     { name = "rich" },
     { name = "typer" },
 ]
@@ -34,6 +35,7 @@ requires-dist = [
     { name = "pydantic", specifier = ">=2.12.4" },
     { name = "pytest", specifier = ">=9.0.0" },
     { name = "python-dotenv", specifier = ">=1.2.1" },
+    { name = "pyyaml", specifier = ">=6.0" },
     { name = "rich", specifier = ">=14.2.0" },
     { name = "typer", specifier = ">=0.20.0" },
 ]

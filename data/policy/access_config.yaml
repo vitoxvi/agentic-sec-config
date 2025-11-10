@@ -1,0 +1,18 @@
+teams:
+  finance:
+    - table: accounts
+      actions: [SELECT, INSERT, UPDATE]
+    - table: transactions
+      actions: [SELECT, INSERT]
+    - table: stock
+      actions: [SELECT]
+  sales:
+    - table: customers
+      actions: [SELECT, INSERT, UPDATE]
+    - table: orders
+      actions: [SELECT, INSERT, UPDATE]
+  warehouse:
+    - table: stock
+      actions: [SELECT, UPDATE]
+    - table: procurement
+      actions: [SELECT, INSERT, UPDATE]

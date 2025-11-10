@@ -94,15 +94,20 @@
 ---
 
 ## Stage 2 — Contracts & Agent Skeleton
-**Goal:** Formalize interfaces, scaffold agents using the manager pattern.
+**Goal:** Formalize interfaces, scaffold agents using the manager pattern, and expose Stage 1 functions as MCP tools.
 
 **Tasks:**
-- Define Pydantic/JSON schemas: `Policy`, `Findings`, `ConfigPlan`.
+- Define Pydantic/JSON schemas: `Findings`, `ConfigPlan` (Policy schema already done in Stage 1).
+- Establish MCP tools: Wrap existing `db_server` functions (`list_tables`, `get_privileges`, `who_can`) as MCP tools using MCP Python SDK.
+  - Create MCP server implementation in `src/mcp_servers/db_server/` exposing tools with proper JSON schemas.
+  - Tools should be callable via MCP protocol (not just CLI).
 - Implement `main-auditor` (OpenAI Agent SDK) invoking specialists via MCP.
 - Add CLI entrypoint: `uv run python -m src.agents.main_auditor audit --dry-run`.
 
 **Exit criteria:**
+- MCP tools registered: `db_server` exposes `list_tables`, `get_privileges`, `who_can` as MCP tools with schemas.
 - Running `audit --dry-run` produces empty findings on a clean DB and a stub report.
+- Agents can call MCP tools (verified via test or manual check).
 
 ---
 

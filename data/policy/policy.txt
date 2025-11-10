@@ -1,0 +1,5 @@
+Employees of the finance team have access to view and modify account balances, view transaction history, and view stock levels.
+
+Employees working in sales have access to manage customer information and process orders.
+
+Employees in the warehouse team have access to view and update stock levels, and manage procurement orders.
