@@ -5,34 +5,82 @@ Student-sized, KISS+YAGNI agentic project demonstrating a manager-pattern audito
 ## Quick Start (macOS)
 
 ```bash
-# 0) Prereqs: Homebrew and Python 3.10+ installed
-# 1) Install uv (if missing)
+# Prerequisites: Homebrew and Python 3.12+
 brew install uv || pipx install uv
 
-# 2) Setup project
+# Setup project
+git clone <repo> && cd <repo>
 uv sync
 cp .env.example .env
 
-# 3) Try the hello commands
-uv run python -m src.agents.main_auditor --help
+# Seed database
+uv run python -m src.core.seed
+
+# Run audit
+uv run python -m src.agents.main_auditor audit --dry-run
 ```
 
-> Note: The OpenAI Agent SDK + MCP Sandbox wrapper are referenced in `pyproject.toml` under a separate optional dependency group. Enable/install them once you have access to the correct package or Git URL.
+## Project Structure
 
-## Repo Map
-- `src/agents/`: manager-pattern agents
-- `src/mcp_servers/`: MCP-exposed tools (db, fs, email, config)
-- `src/core/`: schemas, policy IO, seeds, error injections
-- `info/`: roadmap, project brief, grading scheme, architecture
-- `plans/`: config-as-code change plans
-- `reports/`: audit outputs
-- `outbox/`: "sent" artifacts (reports, emails)
-- `infra/scripts/`: helper scripts for macOS / Windows
+```
+src/
+  agents/              # Manager-pattern agents (main_auditor orchestrates specialists)
+  mcp_servers/         # MCP-exposed tools (db, fs, email, config)
+    {name}_service.py      # Core business logic (pure functions)
+    {name}_mcp_server.py  # MCP protocol wrapper
+    {name}_cli.py         # CLI interface
+  core/                # Schemas, policy IO, seeds, error injection
+info/                  # Roadmap, project brief, grading, architecture docs
+data/                  # Policy files, user CSV, MCP server config
+plans/                 # Config-as-code change plans
+reports/               # Audit outputs
+outbox/                # "Sent" artifacts (reports, emails)
+tests/                 # Test suites per stage
+```
 
-## Stage 0 Checklist
-- [x] uv env setup
-- [x] Basic folder skeleton
-- [x] .env.example
-- [x] Hello FS server + CLI entrypoints
-- [ ] Add/verify OpenAI Agent SDK + MCP Sandbox wrapper URLs
-- [ ] Commit and push
+## Working with the Roadmap
+
+This project follows a staged roadmap (`info/agentic_sec_config_roadmap.md`):
+
+- **Stages are sequential**: Complete Stage N before starting N+1
+- **Exit criteria**: Each stage has clear completion criteria
+- **KISS & YAGNI**: Only build what the current stage requires
+- **Contracts before code**: Schemas defined before implementation
+
+**Current Progress**: Stage 0 ✅ | Stage 1 ✅ | Stage 2 ✅ | Stage 3+ (pending)
+
+## Key Architectural Decisions
+
+**MCP-First**: All side effects go through MCP servers (no direct I/O from agents)
+- Transport: stdio (standard MCP pattern)
+- Server API: FastMCP (automatic schema generation)
+- Server structure: `{name}_service.py` → `{name}_mcp_server.py` → `{name}_cli.py`
+
+**Manager Pattern**: `main-auditor` orchestrates specialist agents:
+- `policy_interpreter`: Translates natural language → technical config
+- `db_auditor`: Compares actual permissions vs policy
+- `fixer`: Generates ConfigPlan for remediation
+- `reporter`: Generates audit reports
+
+**Separation of Concerns**: Service layer (`_service.py`) is independent and reusable:
+- Can add REST API, web UI, or other interfaces without changing core logic
+- CLI can be removed without affecting MCP server or tests
+- Business logic tested independently of protocol wrappers
+
+**Dry-Run First**: All operations default to read-only; explicit `--apply` flag required for changes.
+
+See `info/architecture.md` for detailed architectural documentation.
+
+## Development
+
+```bash
+# Run tests
+uv run pytest
+
+# Format code
+make fmt
+
+# Run CLI commands
+uv run python -m src.mcp_servers.db_server.db_cli --help
+uv run python -m src.agents.main_auditor --help
+```
