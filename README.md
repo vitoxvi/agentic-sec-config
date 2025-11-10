@@ -13,6 +13,9 @@ git clone <repo> && cd <repo>
 uv sync
 cp .env.example .env
 
+# Verify SDKs are installed correctly
+uv run python -c "import agents, mcp; print('SDKs loaded successfully')"
+
 # Seed database
 uv run python -m src.core.seed
 
@@ -20,13 +23,28 @@ uv run python -m src.core.seed
 uv run python -m src.agents.main_auditor audit --dry-run
 ```
 
+### SDK Dependencies
+
+This project uses three key SDKs (automatically installed via `uv sync`):
+
+- **MCP Python SDK** (`mcp[cli]>=1.21.0`): Core MCP protocol implementation
+  - Source: https://github.com/modelcontextprotocol/python-sdk
+- **OpenAI Agents SDK** (`openai-agents>=0.5.0`): Agent orchestration framework
+  - Source: https://github.com/openai/openai-agents-python
+- **MCP Sandbox OpenAI SDK** (`mcp-sandbox-openai-sdk`): Sandbox wrapper for secure agent execution
+  - Source: https://github.com/GuardiAgent/python-mcp-sandbox-openai-sdk (Git dependency)
+
+All SDKs are configured in `pyproject.toml`. The MCP Sandbox SDK is installed from Git, so ensure you have network access and Git installed.
+
+See `info/architecture.md` for detailed SDK documentation.
+
 ## Project Structure
 
 ```
 src/
   agents/              # Manager-pattern agents (main_auditor orchestrates specialists)
   mcp_servers/         # MCP-exposed tools (db, fs, email, config)
-    {name}_service.py      # Core business logic (pure functions)
+    {name}_service.py     # Core business logic (pure functions)
     {name}_mcp_server.py  # MCP protocol wrapper
     {name}_cli.py         # CLI interface
   core/                # Schemas, policy IO, seeds, error injection
