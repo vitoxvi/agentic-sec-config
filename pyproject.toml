@@ -1,0 +1,26 @@
+[project]
+name = "agentic-sec-config"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "mcp-sandbox-openai-sdk",
+    "mcp[cli]>=1.21.0",
+    "openai-agents>=0.5.0",
+    "pydantic>=2.12.4",
+    "pytest>=9.0.0",
+    "python-dotenv>=1.2.1",
+    "rich>=14.2.0",
+    "typer>=0.20.0",
+]
+
+[tool.uv.sources]
+mcp-sandbox-openai-sdk = { git = "https://github.com/GuardiAgent/python-mcp-sandbox-openai-sdk.git" }
+
+[dependency-groups]
+dev = [
+    "black>=25.11.0",
+    "pre-commit>=4.4.0",
+    "ruff>=0.14.4",
+]

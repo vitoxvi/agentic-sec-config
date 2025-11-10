@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+# Environment variables
+.venv/
+.env
+.env.*
+# macOS
+.DS_Store
+# uv
+.uv/
+# Reports and outputs
+/reports/*
+/outbox/*
+/plans/*
+!reports/.gitkeep
+!outbox/.gitkeep
+!plans/.gitkeep
