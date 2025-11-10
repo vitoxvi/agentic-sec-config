@@ -4,7 +4,7 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
-from src.mcp_servers.db_server import get_privileges, list_tables, who_can
+from src.mcp_servers.db_server.db_service import get_privileges, list_tables, who_can
 
 app = typer.Typer(help="MCP DB Server CLI")
 console = Console()

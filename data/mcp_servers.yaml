@@ -1,0 +1,28 @@
+servers:
+  db_server:
+    name: "Database Server"
+    description: "Query database tables and permissions"
+    command: ["python", "-m", "src.mcp_servers.db_server.db_mcp_server"]
+    tools:
+      - db_list_tables
+      - db_get_privileges
+      - db_who_can
+
+  # Placeholders for future servers:
+  # fs_server:
+  #   name: "Filesystem Server"
+  #   description: "Read/write files for policy and reports"
+  #   command: ["python", "-m", "src.mcp_servers.fs_server.fs_server"]
+  #   tools: []
+  #
+  # email_server:
+  #   name: "Email Server"
+  #   description: "Send audit reports via email"
+  #   command: ["python", "-m", "src.mcp_servers.email_server.email_server"]
+  #   tools: []
+  #
+  # config_server:
+  #   name: "Config Server"
+  #   description: "Apply configuration changes"
+  #   command: ["python", "-m", "src.mcp_servers.config_server.config_server"]
+  #   tools: []

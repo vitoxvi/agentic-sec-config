@@ -11,7 +11,7 @@ from src.core.policy_io import (
 )
 from src.core.schemas import AccessConfig
 from src.core.seed import seed
-from src.mcp_servers.db_server import get_privileges, list_tables, who_can
+from src.mcp_servers.db_server.db_service import get_privileges, list_tables, who_can
 
 
 @pytest.fixture
@@ -193,7 +193,7 @@ class TestMCPDBServer:
         """Test list_tables returns expected tables."""
         db_path = tmp_path / "audit.db"
         monkeypatch.setattr("src.core.seed.DB_PATH", db_path)
-        monkeypatch.setattr("src.mcp_servers.db_server.DB_PATH", db_path)
+        monkeypatch.setattr("src.mcp_servers.db_server.db_service.DB_PATH", db_path)
 
         seed(reset=True)
 
@@ -213,7 +213,7 @@ class TestMCPDBServer:
         """Test get_privileges returns correct permissions."""
         db_path = tmp_path / "audit.db"
         monkeypatch.setattr("src.core.seed.DB_PATH", db_path)
-        monkeypatch.setattr("src.mcp_servers.db_server.DB_PATH", db_path)
+        monkeypatch.setattr("src.mcp_servers.db_server.db_service.DB_PATH", db_path)
 
         seed(reset=True)
 
@@ -228,7 +228,7 @@ class TestMCPDBServer:
         """Test who_can returns correct users."""
         db_path = tmp_path / "audit.db"
         monkeypatch.setattr("src.core.seed.DB_PATH", db_path)
-        monkeypatch.setattr("src.mcp_servers.db_server.DB_PATH", db_path)
+        monkeypatch.setattr("src.mcp_servers.db_server.db_service.DB_PATH", db_path)
 
         seed(reset=True)
 

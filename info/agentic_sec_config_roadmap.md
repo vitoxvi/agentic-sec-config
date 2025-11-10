@@ -88,7 +88,7 @@
 
 **Exit criteria:**
 - `uv run python -m src.core.seed` succeeds.
-- `uv run python -m src.mcp_servers.db_server --list` shows tables.
+- `uv run python -m src.mcp_servers.db_server.db_cli --list` shows tables.
 - Policy validates.
 
 ---
@@ -99,7 +99,7 @@
 **Tasks:**
 - Define Pydantic/JSON schemas: `Findings`, `ConfigPlan` (Policy schema already done in Stage 1).
 - Establish MCP tools: Wrap existing `db_server` functions (`list_tables`, `get_privileges`, `who_can`) as MCP tools using MCP Python SDK.
-  - Create MCP server implementation in `src/mcp_servers/db_server/` exposing tools with proper JSON schemas.
+  - Create MCP server implementation in `src/mcp_servers/db_server/db_mcp_server.py` exposing tools with proper JSON schemas.
   - Tools should be callable via MCP protocol (not just CLI).
 - Implement `main-auditor` (OpenAI Agent SDK) invoking specialists via MCP.
 - Add CLI entrypoint: `uv run python -m src.agents.main_auditor audit --dry-run`.
