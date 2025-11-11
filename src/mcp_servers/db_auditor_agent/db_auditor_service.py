@@ -1,6 +1,6 @@
-"""Database Auditor Agent: Compares policy vs actual permissions and generates Findings."""
+"""Database Auditor Agent Service: Core agent logic."""
 
-from agents import Agent, Runner
+from agents import Agent
 
 from src.core.mcp_tools import DB_TOOLS, FS_TOOLS
 from src.core.schemas import Findings
@@ -55,42 +55,3 @@ def create_db_auditor_agent() -> Agent:
         tools=DB_TOOLS + FS_TOOLS,
         output_type=Findings,
     )
-
-
-async def audit_database() -> Findings:
-    """Run the database auditor agent to compare policy vs actual permissions.
-
-    Returns:
-        Findings object containing all violations found
-    """
-    agent = create_db_auditor_agent()
-
-    prompt = """
-    Audit the database permissions by comparing expected permissions from access_config.yaml
-    with actual permissions in the database. Read the access config and users CSV, then
-    query actual permissions for each user and identify any violations.
-
-    Generate Findings with stable IDs and appropriate severity levels.
-    Return the Findings object as structured output.
-    """
-
-    result = await Runner.run(agent, input=prompt)
-
-    # Extract structured output
-    if hasattr(result, "final_output") and isinstance(result.final_output, Findings):
-        return result.final_output
-
-    # Fallback: try to parse from text (shouldn't be needed with structured output)
-    raise ValueError("Failed to get Findings from agent output")
-
-
-if __name__ == "__main__":
-    import asyncio
-
-    async def main():
-        findings = await audit_database()
-        print(f"Found {len(findings.findings)} violations")
-        for finding in findings.findings:
-            print(f"  - {finding.id}: {finding.severity} - {finding.user} on {finding.resource}")
-
-    asyncio.run(main())

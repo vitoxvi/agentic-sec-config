@@ -6,7 +6,6 @@ __pycache__/
 # Environment variables
 .venv/
 .env
-.env.*
 # macOS
 .DS_Store
 # uv

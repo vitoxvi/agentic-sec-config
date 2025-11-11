@@ -8,21 +8,30 @@ servers:
       - db_get_privileges
       - db_who_can
 
-  # Placeholders for future servers:
-  # fs_server:
-  #   name: "Filesystem Server"
-  #   description: "Read/write files for policy and reports"
-  #   command: ["python", "-m", "src.mcp_servers.fs_server.fs_server"]
-  #   tools: []
-  #
-  # email_server:
-  #   name: "Email Server"
-  #   description: "Send audit reports via email"
-  #   command: ["python", "-m", "src.mcp_servers.email_server.email_server"]
-  #   tools: []
-  #
-  # config_server:
-  #   name: "Config Server"
-  #   description: "Apply configuration changes"
-  #   command: ["python", "-m", "src.mcp_servers.config_server.config_server"]
-  #   tools: []
+  fs_server:
+    name: "Filesystem Server"
+    description: "Read/write files for policy and reports"
+    command: ["python", "-m", "src.mcp_servers.fs_server.fs_mcp_server"]
+    tools:
+      - fs_read_file
+      - fs_write_file
+      - fs_read_policy
+      - fs_write_access_config
+      - fs_read_access_config
+      - fs_read_users_csv
+      - fs_write_findings_json
+      - fs_write_report_markdown
+
+  policy_interpreter_agent:
+    name: "Policy Interpreter Agent"
+    description: "Translates natural language policy to technical config"
+    command: ["python", "-m", "src.mcp_servers.policy_interpreter_agent.policy_interpreter_mcp_server"]
+    tools:
+      - interpret_policy
+
+  db_auditor_agent:
+    name: "Database Auditor Agent"
+    description: "Compares policy vs actual permissions and generates Findings"
+    command: ["python", "-m", "src.mcp_servers.db_auditor_agent.db_auditor_mcp_server"]
+    tools:
+      - audit_database

@@ -1,6 +1,6 @@
-"""Policy Interpreter Agent: Translates natural language policy to technical config."""
+"""Policy Interpreter Agent Service: Core agent logic."""
 
-from agents import Agent, Runner
+from agents import Agent
 
 from src.core.mcp_tools import FS_TOOLS
 from src.core.schemas import AccessConfig
@@ -57,38 +57,3 @@ def create_policy_interpreter_agent() -> Agent:
         tools=FS_TOOLS,
         output_type=AccessConfig,
     )
-
-
-async def interpret_policy() -> AccessConfig:
-    """Run the policy interpreter agent to translate policy.txt to access_config.yaml.
-
-    Returns:
-        AccessConfig object representing the translated policy
-    """
-    agent = create_policy_interpreter_agent()
-
-    prompt = """
-    Translate the natural language policy from policy.txt into technical access_config.yaml format.
-    Read the policy file, translate it, and write the result to access_config.yaml.
-    Return the AccessConfig object as structured output.
-    """
-
-    result = await Runner.run(agent, input=prompt)
-
-    # Extract structured output
-    if hasattr(result, "final_output") and isinstance(result.final_output, AccessConfig):
-        return result.final_output
-
-    # If structured output not available, try to parse from text
-    # This is a fallback - structured output should work
-    raise ValueError("Failed to get AccessConfig from agent output")
-
-
-if __name__ == "__main__":
-    import asyncio
-
-    async def main():
-        config = await interpret_policy()
-        print(f"Translated policy: {config}")
-
-    asyncio.run(main())
